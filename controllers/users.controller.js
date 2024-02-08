@@ -1,6 +1,7 @@
 const Usuario = require('../models/usuario.model');
 const {response} = require('express');
 const bcrypt = require('bcryptjs');
+const { generateJWT } = require('../helpers/jwt.helpers');
 
 
 
@@ -11,12 +12,9 @@ const bcrypt = require('bcryptjs');
 const getUsers = async(req, res) => {
     const users = await Usuario.find({}, 'name, email role');
 
-    
-
-
    return res.status(200).json({
         ok: true,
-        users
+        users,
     })
 };
 /**
@@ -42,14 +40,19 @@ const postUser = async (req, res = response) => {
         usuario.password = bcrypt.hashSync(password, salt);
 
         await usuario.save();
+
+        const usuarioDB = await Usuario.findOne({email});
+        // generate JWT - token
+        const token = await generateJWT(usuarioDB.id)
    
    
        return res.status(201).json({
            ok: true,
-           usuario
+           usuario, 
+           token
        })
     } catch(err) {
-        console.log(error);
+        console.log(err);
         res.status(500).json({
             ok: false,
             msg: 'Error inesperado... revisar logs'
