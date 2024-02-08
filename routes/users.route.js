@@ -2,7 +2,7 @@
  * User Route files
  */
 const {Router} = require('express');
-const {getUsers,postUser, updateUser } = require('../controllers/users.controller');
+const {getUsers,postUser, updateUser, deleteUser } = require('../controllers/users.controller');
 const {check} = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
@@ -25,6 +25,8 @@ router.put('/:id',
     check('email', 'email is required').isEmail(),
     check('role', 'role is required').notEmpty() 
 ], updateUser),
+
+router.delete('/:id',deleteUser)
 
 
 
