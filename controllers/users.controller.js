@@ -103,7 +103,7 @@ const updateUser = async(req, res = response) => {
         })
     } catch (err){
         console.log(err);
-        res.status(500).json({
+       return res.status(500).json({
             ok: false,
             msg: 'Error inesperado... revisar logs'
         })
@@ -134,7 +134,7 @@ const deleteUser = async(req, res = response) => {
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            ok: true,
+            ok: false,
             msg: 'revisar logs'
         });
     }
