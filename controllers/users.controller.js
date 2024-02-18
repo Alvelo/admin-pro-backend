@@ -10,11 +10,28 @@ const { generateJWT } = require('../helpers/jwt.helpers');
  */
 
 const getUsers = async(req, res) => {
-    const users = await Usuario.find({}, 'name, email role');
+    const offset = Number(req.query.offset) || 0;
+    const limit = Number(req.query.limit) || 20;
+    
+    // const users = await Usuario.find({}, 'name, email role')
+    //                             .skip(offset)
+    //                             .limit(limit);
+
+    // const total = await Usuario.countDocuments();
+
+   const [users, total] =  await Promise.all([
+        await Usuario.find({}, 'name, email role img')
+                                 .skip(offset)
+                                 .limit(limit),
+        await Usuario.countDocuments().skip(offset)
+        .limit(limit),
+
+    ]);
 
    return res.status(200).json({
         ok: true,
         users,
+        total
     })
 };
 /**
