@@ -1,6 +1,0 @@
-# Exclude environments files
-.env
-
-node_modules/
-
-
