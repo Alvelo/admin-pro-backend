@@ -6,6 +6,8 @@ require('dotenv').config();
 const app = express();
 //Configurar cors
 app.use(cors());
+//Fpublic folder
+app.use(express.static('public'));
 
 app.use(express.json() );
 
